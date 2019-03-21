@@ -24,7 +24,13 @@ class RMPlayer:
         matrix = rps.PAYOFF_MATRIX
         strategy = self.getStrategy()
         myAction = self.getAction(strategy)
-        actionUtility = matrix[:, oppAction, 0].reshape(rps.NUM_ACTIONS,)
+        # %% TODO: 
+        # Warning: for symtric game, it's ok to write this way.
+        # But need to change it to
+        # matrix[oppAction, :, 1] for general games.
+        actionUtility = matrix[:, oppAction, 0].reshape(rps.NUM_ACTIONS,)  
+        # %%
+        
         regrets = actionUtility - actionUtility[myAction]
         self.regretSum += regrets
         
@@ -34,5 +40,5 @@ class RMPlayer:
         if (normalizationSum > 0):
             avgStrategy = self.strategySum / normalizationSum
         else:
-            avgStrategy = 1.0 / normalizationSum
+            avgStrategy = 1.0 / len(self.avgStrategy)
         return avgStrategy
